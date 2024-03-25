@@ -1,6 +1,14 @@
 {
     "folders": [
         {
+            "name": "MyProject",
+            "path": "D:/STRANLU/Stranlu-Fortnite/Plugins/MyProject/Content"
+        },
+        {
+            "name": "MyProject/Assets",
+            "path": "C:/Users/Franco/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/MyProject-Assets"
+        },
+        {
             "name": "vproject - DO NOT MODIFY",
             "path": "C:/Users/Franco/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/vproject"
         },
@@ -15,10 +23,6 @@
         {
             "name": "Fortnite",
             "path": "C:/Users/Franco/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/Fortnite"
-        },
-        {
-            "name": "MyProject",
-            "path": "D:/STRANLU/Stranlu-Fortnite/Plugins/MyProject/Content"
         }
     ],
     "settings": {
