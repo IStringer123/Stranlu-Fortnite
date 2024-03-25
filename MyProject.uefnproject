@@ -35,11 +35,11 @@
 	},
 	"bindings":
 	{
-		"projectId": "6a703006-44b3-ea34-dd12-a0bcc0d368eb",
+		"projectId": "815720af-4fb4-f86f-c6b2-4bad764306ce",
 		"projectVersePath": "",
 		"modules":
 		{
-			"MyProject": "8b4a569e-487b-430d-1b1d-d3ba55628152"
+			"MyProject": "e800072f-40c1-3be1-2d05-28942ef4b971"
 		}
 	}
 }
