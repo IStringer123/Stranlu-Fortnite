@@ -2,27 +2,27 @@
     "folders": [
         {
             "name": "MyProject",
-            "path": "C:/Users/soyba/Documents/Fortnite Projects/MyProject/Stranlu-Fortnite/Plugins/MyProject/Content"
+            "path": "D:/STRANLU/Stranlu-Fortnite/Stranlu-Fortnite/Plugins/MyProject/Content"
         },
         {
             "name": "MyProject/Assets",
-            "path": "C:/Users/soyba/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/MyProject-Assets"
+            "path": "C:/Users/Franco/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/MyProject-Assets"
         },
         {
             "name": "vproject - DO NOT MODIFY",
-            "path": "C:/Users/soyba/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/vproject"
+            "path": "C:/Users/Franco/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/vproject"
         },
         {
             "name": "Verse",
-            "path": "C:/Users/soyba/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/Verse"
+            "path": "C:/Users/Franco/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/Verse"
         },
         {
             "name": "UnrealEngine",
-            "path": "C:/Users/soyba/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/UnrealEngine"
+            "path": "C:/Users/Franco/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/UnrealEngine"
         },
         {
             "name": "Fortnite",
-            "path": "C:/Users/soyba/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/Fortnite"
+            "path": "C:/Users/Franco/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/Fortnite"
         }
     ],
     "settings": {
@@ -38,6 +38,7 @@
             "__ExternalObjects__": true
         },
         "files.autoSave": "onWindowChange",
+        "workbench.colorTheme": "Verse (Dark)",
         "editor.bracketPairColorization.enabled": false,
         "editor.acceptSuggestionOnEnter": "off"
     },
