@@ -7,7 +7,7 @@
 	"docsUrl": "",
 	"kind": "Island",
 	"templateCategory": "UserGenerated",
-	"compatibilityVersion": "29.01",
+	"compatibilityVersion": "29.10",
 	"editorPermissions": [],
 	"epicApp": "",
 	"sortPriority": 0,
@@ -35,11 +35,11 @@
 	},
 	"bindings":
 	{
-		"projectId": "815720af-4fb4-f86f-c6b2-4bad764306ce",
+		"projectId": "39dc174f-42a7-959c-e1d5-23ae4c617004",
 		"projectVersePath": "",
 		"modules":
 		{
-			"MyProject": "e800072f-40c1-3be1-2d05-28942ef4b971"
+			"MyProject": "db241047-4d3c-89c7-779b-32b0c04a60da"
 		}
 	}
 }

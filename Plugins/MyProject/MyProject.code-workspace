@@ -1,6 +1,14 @@
 {
     "folders": [
         {
+            "name": "MyProject",
+            "path": "C:/Users/soyba/Documents/Fortnite Projects/MyProject/Stranlu-Fortnite/Plugins/MyProject/Content"
+        },
+        {
+            "name": "MyProject/Assets",
+            "path": "C:/Users/soyba/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/MyProject-Assets"
+        },
+        {
             "name": "vproject - DO NOT MODIFY",
             "path": "C:/Users/soyba/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/vproject"
         },
@@ -15,10 +23,6 @@
         {
             "name": "Fortnite",
             "path": "C:/Users/soyba/AppData/Local/UnrealEditorFortnite/Saved/VerseProject/MyProject/Fortnite"
-        },
-        {
-            "name": "MyProject",
-            "path": "C:/Users/soyba/Documents/Fortnite Projects/MyProject/Stranlu-Fortnite/Plugins/MyProject/Content"
         }
     ],
     "settings": {
@@ -34,7 +38,6 @@
             "__ExternalObjects__": true
         },
         "files.autoSave": "onWindowChange",
-        "workbench.colorTheme": "Verse (Dark)",
         "editor.bracketPairColorization.enabled": false,
         "editor.acceptSuggestionOnEnter": "off"
     },
