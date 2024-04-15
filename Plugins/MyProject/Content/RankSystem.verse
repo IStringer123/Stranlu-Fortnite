@@ -12,12 +12,6 @@ using { /Verse.org/Simulation/Tags }
 using { /Verse.org/Assets }
 
 RankProgressBar := class():
-    
-    
-    #ProgressBarColorBase<private> : color_block = color_block{
-        #DefaultColor := MakeColorFromHex("000000")
-#DefaultDesiredSize := vector2{X:= 202.0, Y := 43.0}} 
-        
 
     var ProgressBarColorTop<private> : color_block = color_block{}  
     var Overlay<private> : overlay = overlay{}
@@ -35,12 +29,12 @@ RankProgressBar := class():
         var NewGoal : float = Goal * 1.0
 
         RankPercentage := NewCurrent / NewGoal
-        #BarSize := ProgressBarColorBase.DefaultDesiredSize
-        #NewHealthBarWidth := BarSize.X * RankPercentage
-        if (Current := float[NewGoal], Total := float[NewGoal]):
-            PBarTitleTextBlock.SetText(HPTitleText("{iCurrent}/{Goal}"))
 
-        #UpdateHealthBar(NewHealthBarWidth)
+        if (Current := float[NewGoal], Total := float[NewGoal]):
+            if(iCurrent >= 170):
+                PBarTitleTextBlock.SetText(HPTitleText("{iCurrent}/∞"))
+            else:
+                PBarTitleTextBlock.SetText(HPTitleText("{iCurrent}/{Goal}"))
 
     ShowUIForPlayer(Player : player):void=
         if (PlayerUI := GetPlayerUI[Player]):
@@ -50,30 +44,16 @@ RankProgressBar := class():
 
     UpdateHealthBar(NewWidth : float):void=
         Overlay.RemoveWidget(PBarTitleTextBlock)
-        Overlay.RemoveWidget(ProgressBarColorTop)
-        set ProgressBarColorTop = CreateTopHealthBar(NewWidth)
-
-        Overlay.AddWidget(CreateOverlaySlot(ProgressBarColorTop, horizontal_alignment.Left))
         Overlay.AddWidget(CreateOverlaySlot(PBarTitleTextBlock,horizontal_alignment.Center))
         
     CreateOverlaySlot<private>(TheWidget : widget, HAlignment : horizontal_alignment):overlay_slot=  
         overlay_slot:
             Widget := TheWidget 
-            HorizontalAlignment := HAlignment
+            #HorizontalAlignment := HAlignment
 
-    CreateTopHealthBar<private>(Width: float):color_block=
-        ColorBlock := color_block{
-            DefaultColor := MakeColorFromHex("00ffff") 
-            DefaultDesiredSize := vector2{X:= Width, Y := 23.0}} 
-        
-        set ProgressBarColorTop = ColorBlock
-        
-        
     CreateOverlay<private>(Agent : agent) : overlay=
         TheOverlay := overlay:
             Slots := array:
-                overlay_slot:
-                    Widget := CreateTopHealthBar(1200.0)
                 overlay_slot:
                     Widget := PBarTitleTextBlock
         set Overlay = TheOverlay
@@ -84,7 +64,7 @@ RankProgressBar := class():
             Slots := array:
                 canvas_slot:
                     Anchors := anchors{Minimum := vector2{X := 0.175149, Y := 0.833333}, Maximum := vector2{X := 0.175149, Y := 0.833333}}
-                    Offsets := margin{Top := -50.0, Left := -196.0, Right := 0.0, Bottom := 0.0} #SACASAS
+                    Offsets := margin{Top := 100.0, Left := -100.0, Right := 0.0, Bottom := 0.0} #SACASAS
                     Alignment := vector2{X := 0.0, Y := 0.0}
                     Widget := stack_box:
                         Orientation := orientation.Vertical
@@ -142,7 +122,7 @@ RankSystem := class(creative_device):
 
     Unreal : texture = Ranks.Unreal
 
-    Barra1 : texture = Ranks.Barra1
+    #Barra1 : texture = Ranks.Barra1
     
 
     # Runs when the device is started in a running game
@@ -203,12 +183,12 @@ RankSystem := class(creative_device):
                             canvas_slot:
                                 Widget := RankTextureBlock
                                 Anchors := anchors{Minimum := vector2{X := 0.15, Y := 0.8}, Maximum := vector2{X := 0.15, Y := 0.8}}
-                                Offsets := margin{Top := -80.0,Left := -270.0, Right :=0.0, Bottom :=0.0} 
+                                Offsets := margin{Top := -80.0,Left := -270.0, Right :=0.0, Bottom :=0.0}  #Top := -80.0,Left := -270.0, Right :=0.0, Bottom :=0.0}  
                                 Alignment := vector2{X := 0.0, Y := 0.0}    
                                 
                                 
                     #Barra transparente
-                    
+                    <#
                     BarraBlock : texture_block = texture_block{DefaultImage := Barra1, DefaultDesiredSize := vector2{X := 500.0, Y := 125.0}} 
                     BarraBlock.SetImage(Barra1)
 
@@ -218,11 +198,11 @@ RankSystem := class(creative_device):
                                 Widget := BarraBlock
                                 Anchors := anchors{Minimum := vector2{X := 0.15, Y := 0.8}, Maximum := vector2{X := 0.15, Y := 0.8}}
                                 Offsets := margin{Top := -65.0,Left := -280.0, Right :=0.0, Bottom :=0.0} 
-                                Alignment := vector2{X := 0.0, Y := 0.0}     
+                                Alignment := vector2{X := 0.0, Y := 0.0}     #>
 
                     if (PlayerUI := GetPlayerUI[Player]):
                         PlayerUI.AddWidget(NewCanvas)
-                        PlayerUI.AddWidget(BarraTransparente)
+                        #PlayerUI.AddWidget(BarraTransparente)
                     break
         loop:
             Sleep(0.01)
@@ -268,77 +248,77 @@ RankSystem := class(creative_device):
                     break
         loop:
             Sleep(0.01)
+            if (EliminationTracker.GetValue(Agent) >= 70):
+                if (PV : PlayerVariable = PlayerMap[Agent]):
+                    PV.SetCurrentGoal(80)   
+                    RankTextureBlock.SetImage(Gold2)
+                    break
+        loop:
+            Sleep(0.01)
             if (EliminationTracker.GetValue(Agent) >= 80):
                 if (PV : PlayerVariable = PlayerMap[Agent]):
                     PV.SetCurrentGoal(90)   
-                    RankTextureBlock.SetImage(Gold2)
+                    RankTextureBlock.SetImage(Gold3)
                     break
         loop:
             Sleep(0.01)
             if (EliminationTracker.GetValue(Agent) >= 90):
                 if (PV : PlayerVariable = PlayerMap[Agent]):
                     PV.SetCurrentGoal(100)   
-                    RankTextureBlock.SetImage(Gold3)
+                    RankTextureBlock.SetImage(Plat1)
                     break
         loop:
             Sleep(0.01)
             if (EliminationTracker.GetValue(Agent) >= 100):
                 if (PV : PlayerVariable = PlayerMap[Agent]):
                     PV.SetCurrentGoal(110)   
-                    RankTextureBlock.SetImage(Plat1)
-                    break
-        loop:
-            Sleep(0.01)
-            if (EliminationTracker.GetValue(Agent) >= 110):
-                if (PV : PlayerVariable = PlayerMap[Agent]):
-                    PV.SetCurrentGoal(120)   
                     RankTextureBlock.SetImage(Plat2)
                     break
         loop:
             Sleep(0.01)
-            if (EliminationTracker.GetValue(Agent) >= 120):
+            if (EliminationTracker.GetValue(Agent) >= 110):
                 if (CP : PlayerVariable = PlayerMap[Agent]):
-                    CP.SetCurrentGoal(130)   
+                    CP.SetCurrentGoal(120)   
                     RankTextureBlock.SetImage(Plat3)
+                    break
+        loop:
+            Sleep(0.01)
+            if (EliminationTracker.GetValue(Agent) >= 120):
+                if (PV : PlayerVariable = PlayerMap[Agent]):
+                    PV.SetCurrentGoal(130)   
+                    RankTextureBlock.SetImage(Diamond1)
                     break
         loop:
             Sleep(0.01)
             if (EliminationTracker.GetValue(Agent) >= 130):
                 if (PV : PlayerVariable = PlayerMap[Agent]):
                     PV.SetCurrentGoal(140)   
-                    RankTextureBlock.SetImage(Diamond1)
+                    RankTextureBlock.SetImage(Diamond2)
                     break
         loop:
             Sleep(0.01)
             if (EliminationTracker.GetValue(Agent) >= 140):
                 if (PV : PlayerVariable = PlayerMap[Agent]):
                     PV.SetCurrentGoal(150)   
-                    RankTextureBlock.SetImage(Diamond2)
+                    RankTextureBlock.SetImage(Diamond3)
                     break
         loop:
             Sleep(0.01)
             if (EliminationTracker.GetValue(Agent) >= 150):
                 if (PV : PlayerVariable = PlayerMap[Agent]):
                     PV.SetCurrentGoal(160)   
-                    RankTextureBlock.SetImage(Diamond3)
+                    RankTextureBlock.SetImage(Elite)
                     break
         loop:
             Sleep(0.01)
             if (EliminationTracker.GetValue(Agent) >= 160):
                 if (PV : PlayerVariable = PlayerMap[Agent]):
                     PV.SetCurrentGoal(170)   
-                    RankTextureBlock.SetImage(Elite)
-                    break
-        loop:
-            Sleep(0.01)
-            if (EliminationTracker.GetValue(Agent) >= 170):
-                if (PV : PlayerVariable = PlayerMap[Agent]):
-                    PV.SetCurrentGoal(180)   
                     RankTextureBlock.SetImage(Champion)
                     break
         loop:
             Sleep(0.01)
-            if (EliminationTracker.GetValue(Agent) >= 180):
+            if (EliminationTracker.GetValue(Agent) >= 170):
                 if (PV : PlayerVariable = PlayerMap[Agent]):   
                     RankTextureBlock.SetImage(Unreal)
                     break
