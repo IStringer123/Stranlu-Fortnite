@@ -59,7 +59,7 @@ Game_Manager_Device := class(creative_device):
         InitPlayers()
         InitSpawners()
         ElimManager.EliminatedEvent.Subscribe(SelfEliminated)
-        TimerDevice.SuccessEvent.Subscribe(RoundChange)
+      #  TimerDevice.SuccessEvent.Subscribe(RoundChange) 
         InitTestMode()
     
         
@@ -92,21 +92,27 @@ Game_Manager_Device := class(creative_device):
                 ItemGranter.GrantItem(Player)
 
     OnPlayerEliminated(Result : elimination_result) : void=
+            Print("OnPlayerEliminated():  start.")
             Eliminator := Result.EliminatingCharacter
             
             if (FortCharacter := Eliminator?, EliminatingAgent := FortCharacter.GetAgent[]):
+                Print("OnPLayerEliminated():  successfully retrieved FortCharacter and EliminatingAgent.")
                 PromotePlayer(EliminatingAgent)
                 
 
     PromotePlayer(Agent: agent) : void=
+        Print("PromotePlayer():  start")
         var WeaponTier : int = 0
         if (Player := player[Agent], PlayerWeaponTier := PlayerMap[Player]):
             set WeaponTier = PlayerWeaponTier + 1
+            Print("PromotePlayer():  successfully retrieved Player and PlayerWeaponTier.")
 
             if(WeaponTier >= ElimsToEndGame):
+                Print("PromotePlayer(): WeaponTier is greater than or equal to ElimsToEndGame.")
                 set WeaponTier = 0
         
         if (Player := player[Agent], set PlayerMap[Player] = WeaponTier):
+            Print("PromotePlayer():  successfully retrieved Player and set PlayerMap to equal WeaponTier.")
             GrantWeapon(Player, WeaponTier)
         
     InitTestMode() : void=
@@ -165,7 +171,7 @@ Game_Manager_Device := class(creative_device):
             
             
         set ActualRound = ActualRound + 1
-        InitSpawners()
+        # InitSpawners()
             
         Print("----ACTUAL ROUND----: " + ToString(ActualRound))
             

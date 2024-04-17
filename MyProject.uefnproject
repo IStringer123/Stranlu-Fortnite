@@ -23,23 +23,23 @@
 	{
 		"matchmaking":
 		{
-			"maxPlayers": 1,
-			"maxTeamCount": 1,
-			"maxTeamSize": 1,
-			"maxSocialPartySize": 1,
+			"maxPlayers": 20,
+			"maxTeamCount": 20,
+			"maxTeamSize": 20,
+			"maxSocialPartySize": 20,
 			"allowJoinInProgress": true,
 			"allowSquadFillOption": false,
-			"islandQueuePrivacy": "Unrestricted",
+			"islandQueuePrivacy": "Public",
 			"version": 1
 		}
 	},
 	"bindings":
 	{
-		"projectId": "214ba97d-4813-e5a7-5f3a-1b96ec1f39be",
+		"projectId": "7feebce5-443f-2df1-77cc-97bf6a7f0a59",
 		"projectVersePath": "",
 		"modules":
 		{
-			"MyProject": "7d5a675d-43eb-26ca-b631-8e98f2ac48ff"
+			"MyProject": "3e3db82e-44b6-5477-e813-fa9f26c45198"
 		}
 	}
 }
