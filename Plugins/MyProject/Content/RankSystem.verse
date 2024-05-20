@@ -18,10 +18,17 @@ RankProgressBar := class():
         
     PBarTitleTextBlock<private> : text_block = text_block{DefaultTextColor := MakeColorFromHex("FFFFFF")}
 
+    CodigoMapa<private> : text_block = text_block{DefaultTextColor := MakeColorFromHex("FFFFFF")}
+
     HPTitleText<private><localizes>(HPText : string) : message = "{HPText}"
 
+
     Init(Current : int, Goal : int):void=
-        PBarTitleTextBlock.SetText(HPTitleText("{Current}/{Goal}"))
+
+        if(resto : int = Mod[Current,Goal]):
+            PBarTitleTextBlock.SetText(HPTitleText("{resto}/{10}"))
+        
+        CodigoMapa.SetText(HPTitleText("6363-3580-6824"))
 
 
     UpdateWidthAndText(iCurrent : int, Goal : int):void=
@@ -31,10 +38,12 @@ RankProgressBar := class():
         RankPercentage := NewCurrent / NewGoal
 
         if (Current := float[NewGoal], Total := float[NewGoal]):
-            if(iCurrent >= 170):
-                PBarTitleTextBlock.SetText(HPTitleText("{iCurrent}/∞"))
-            else:
-                PBarTitleTextBlock.SetText(HPTitleText("{iCurrent}/{Goal}"))
+
+            if(resto : int = Mod[iCurrent,10]):
+                if(iCurrent >= 170):
+                    PBarTitleTextBlock.SetText(HPTitleText("{iCurrent}/∞"))
+                else:
+                    PBarTitleTextBlock.SetText(HPTitleText("{resto}/{10}"))
 
     ShowUIForPlayer(Player : player):void=
         if (PlayerUI := GetPlayerUI[Player]):
@@ -64,13 +73,22 @@ RankProgressBar := class():
             Slots := array:
                 canvas_slot:
                     Anchors := anchors{Minimum := vector2{X := 0.175149, Y := 0.833333}, Maximum := vector2{X := 0.175149, Y := 0.833333}}
-                    Offsets := margin{Top := 100.0, Left := -100.0, Right := 0.0, Bottom := 0.0} #SACASAS
+                    Offsets := margin{Top := -150.0, Left := -280.0, Right := 0.0, Bottom := 0.0} #SACASAS
                     Alignment := vector2{X := 0.0, Y := 0.0}
                     Widget := stack_box:
                         Orientation := orientation.Vertical
                         Slots := array:
                             stack_box_slot:
                                 Widget := CreateOverlay(Agent)
+                canvas_slot:
+                    Anchors := anchors{Minimum := vector2{X := 0.175149, Y := 0.833333}, Maximum := vector2{X := 0.175149, Y := 0.833333}}
+                    Offsets := margin{Top := -870.0, Left := 380.0, Right := 0.0, Bottom := 0.0} #SACASAS
+                    Alignment := vector2{X := 0.0, Y := 0.0}
+                    Widget := stack_box:
+                        Orientation := orientation.Vertical
+                        Slots := array:
+                            stack_box_slot:
+                                Widget := CodigoMapa
                             
                                                                 
         return TheCanvas
@@ -80,11 +98,8 @@ RankSystem := class(creative_device):
 
     var PlayerMap : [agent]PlayerVariable = map{}
 
-    #Change names to your texture ones
 
     @editable EliminationTracker : tracker_device = tracker_device{}
-
-    #Unreanked : texture = Ranks.Unranked
 
     Bronze1 : texture = Ranks.Bronze_1
 
@@ -135,6 +150,8 @@ RankSystem := class(creative_device):
         for(Player : AlllPlayers):
             OnPlayerAdded(Player)
 
+        GetPlayspace().PlayerAddedEvent().Subscribe(OnPlayerAdded)
+
     OnPlayerAdded(Agent : agent):void=
        if (PlayerObj := player[Agent]):
             if (PlayerExists := PlayerMap[Agent]):
@@ -183,7 +200,7 @@ RankSystem := class(creative_device):
                             canvas_slot:
                                 Widget := RankTextureBlock
                                 Anchors := anchors{Minimum := vector2{X := 0.15, Y := 0.8}, Maximum := vector2{X := 0.15, Y := 0.8}}
-                                Offsets := margin{Top := -80.0,Left := -270.0, Right :=0.0, Bottom :=0.0}  #Top := -80.0,Left := -270.0, Right :=0.0, Bottom :=0.0}  
+                                Offsets := margin{Top := -80.0,Left := -260.0, Right :=0.0, Bottom :=0.0}  #Top := -80.0,Left := -270.0, Right :=0.0, Bottom :=0.0}  
                                 Alignment := vector2{X := 0.0, Y := 0.0}    
                                 
                                 
@@ -333,4 +350,3 @@ RankSystem := class(creative_device):
                     set TempAllPlayersMap = ConcatenateMaps(TempAllPlayersMap, map{Key => Value})
                 
                 set PlayerMap = TempAllPlayersMap
-    #Don't share this code

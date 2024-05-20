@@ -8,11 +8,6 @@ using { /Verse.org/Random }
 using { /UnrealEngine.com/Temporary/SpatialMath }
 using { /Fortnite.com/FortPlayerUtilities }
 
-
-
-# See https://dev.epicgames.com/documentation/en-us/uefn/create-your-own-device-in-verse for how to create a verse device.
-
-# A Verse-authored creative device that can be placed in a level
 Game_Manager_Device := class(creative_device):
 
     #Todos los Players
@@ -26,10 +21,6 @@ Game_Manager_Device := class(creative_device):
     var SpawnsPad : []player_spawner_device = array{}
     @editable ElimManager : elimination_manager_device = elimination_manager_device{}
 
-    #Teleporter
-    @editable
-    var Teleporter1 : teleporter_device  = teleporter_device{}
-
     #Weapon Granters
     @editable
     var WeaponGranters : []item_granter_device = array{}
@@ -39,27 +30,20 @@ Game_Manager_Device := class(creative_device):
     @editable
     var Sentries : []sentry_device = array{}
 
-
-    #Timer
-    @editable
-    TimerDevice : timer_device = timer_device{}
-
-
-
     #Variables
     var ElimsToEndGame : int = 0
-    var ActualRound : int = 1
     var MaximoRondas : int = 2
     
 
     #-------------------CODIGO-----------------------------
 
     OnBegin<override>()<suspends>:void=
+        GetPlayspace().PlayerAddedEvent().Subscribe(RegistrarNuevo)
         set ElimsToEndGame = WeaponGranters.Length;
         InitPlayers()
         InitSpawners()
         ElimManager.EliminatedEvent.Subscribe(SelfEliminated)
-      #  TimerDevice.SuccessEvent.Subscribe(RoundChange) 
+
         InitTestMode()
     
         
@@ -69,7 +53,6 @@ Game_Manager_Device := class(creative_device):
         
         DisableSpawners()
 
-        Print("SPAWNERS MAPA 1")
         for(Spawner : Spawners1):
             Spawner.Enable()
 
@@ -79,7 +62,13 @@ Game_Manager_Device := class(creative_device):
         for(Spawner1 : Spawners1):
             Spawner1.Disable()
 
+    RegistrarNuevo(Player : player): void=
 
+        if (set PlayerMap[Player] = 0, WeaponTier:= PlayerMap[Player],FortCharacter := Player.GetFortCharacter[]):
+            FortCharacter.EliminatedEvent().Subscribe(OnPlayerEliminated)
+            GrantWeapon(Player, WeaponTier)
+            
+            
     InitPlayers() : void=
         AllPlayers := GetPlayspace ().GetPlayers()
        for (Player : AllPlayers, FortCharacter := Player.GetFortCharacter[]):
@@ -92,27 +81,27 @@ Game_Manager_Device := class(creative_device):
                 ItemGranter.GrantItem(Player)
 
     OnPlayerEliminated(Result : elimination_result) : void=
-            Print("OnPlayerEliminated():  start.")
+
             Eliminator := Result.EliminatingCharacter
             
             if (FortCharacter := Eliminator?, EliminatingAgent := FortCharacter.GetAgent[]):
-                Print("OnPLayerEliminated():  successfully retrieved FortCharacter and EliminatingAgent.")
+
                 PromotePlayer(EliminatingAgent)
                 
 
     PromotePlayer(Agent: agent) : void=
-        Print("PromotePlayer():  start")
+
         var WeaponTier : int = 0
         if (Player := player[Agent], PlayerWeaponTier := PlayerMap[Player]):
             set WeaponTier = PlayerWeaponTier + 1
-            Print("PromotePlayer():  successfully retrieved Player and PlayerWeaponTier.")
+
 
             if(WeaponTier >= ElimsToEndGame):
-                Print("PromotePlayer(): WeaponTier is greater than or equal to ElimsToEndGame.")
+
                 set WeaponTier = 0
         
         if (Player := player[Agent], set PlayerMap[Player] = WeaponTier):
-            Print("PromotePlayer():  successfully retrieved Player and set PlayerMap to equal WeaponTier.")
+
             GrantWeapon(Player, WeaponTier)
         
     InitTestMode() : void=
@@ -122,61 +111,17 @@ Game_Manager_Device := class(creative_device):
     TestPlayerElimination(Agent : ?agent) : void=
         if (Player := Agent?):
             PromotePlayer(Player)
-            Print("Promoviendo")
 
 
     #Instant Respawn:
 
     SelfEliminated(Agent:agent):void=
         
-
-        Print("SELF ELIMINATED")
         set SpawnsPad = Spawners1
 
         PadRandom := GetRandomInt(1,SpawnsPad.Length)
         if ( RandomInt := SpawnsPad[PadRandom-1] ): 
             Transform := RandomInt.GetTransform()
             if (Player := player[Agent], PlayerWeaponTier := PlayerMap[Player]):
-                Print("Respawneando...")
                 Agent.Respawn(Transform.Translation, Transform.Rotation)
                 GrantWeapon(Player, PlayerWeaponTier)
-
-    TelentrasportarMapa(): void=
-        AllPlayers := GetPlayspace ().GetPlayers()
-        Print("Tpeando Mapa1")
-        for (Player : AllPlayers):
-            Teleporter1.Teleport(Player)
-
-
-    RespawnearTodos(): void=
-
-        set SpawnsPad = Spawners1
-
-        PadRandom := GetRandomInt(1,SpawnsPad.Length)
-        if ( RandomInt := SpawnsPad[PadRandom-1] ): 
-            Transform := RandomInt.GetTransform()
-            AllPlayers := GetPlayspace ().GetPlayers()
-            Print("Respawneando Todos...")
-            for (Player : AllPlayers,PlayerWeaponTier := PlayerMap[Player]):
-                Player.Respawn(Transform.Translation, Transform.Rotation)
-                GrantWeapon(Player, PlayerWeaponTier)
-
-    RoundChange(Agent : ?agent): void=
-        #Ver si la mayoria votÃ³ cambio
-
-        Print("Round Changing...")
-        #Actualiza numero de rondas y Incializa Spawners del Nuevo Mapa.
-        if(ActualRound=MaximoRondas):
-            set ActualRound=0
-            
-            
-        set ActualRound = ActualRound + 1
-        # InitSpawners()
-            
-        Print("----ACTUAL ROUND----: " + ToString(ActualRound))
-            
-        #Tpear todos los jugadores segun ronda.
-
-        #Respawnear a todos antes del tp
-        RespawnearTodos()
-        TelentrasportarMapa()
